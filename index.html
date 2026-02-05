@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrinceRomeo - Scripting Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ocean-deep: #0a192f;
+            --ocean-mid: #1a3a52;
+            --ocean-light: #2d5f7f;
+            --seafoam: #64ffda;
+            --sand: #f4e4c1;
+            --wave-blue: #4a90e2;
+            --sunset: #ff6b6b;
+            --cozy-warm: #ffa94d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(to bottom, var(--ocean-deep) 0%, var(--ocean-mid) 50%, var(--ocean-light) 100%);
+            color: var(--sand);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated wave background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(100, 255, 218, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(74, 144, 226, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wave-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,60 Q300,0 600,60 T1200,60 L1200,120 L0,120 Z' fill='%2364ffda' opacity='0.5'/%3E%3C/svg%3E") repeat-x;
+            animation: wave 15s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            animation: wave 20s linear infinite reverse;
+            opacity: 0.3;
+            bottom: 10px;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--seafoam) 0%, var(--wave-blue) 50%, var(--sunset) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .tagline {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--sand);
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .tagline::before,
+        .tagline::after {
+            content: '~';
+            margin: 0 1rem;
+            color: var(--seafoam);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section {
+            background: rgba(26, 58, 82, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--seafoam);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--seafoam), transparent);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .video-card {
+            background: rgba(13, 27, 42, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(100, 255, 218, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.1), rgba(74, 144, 226, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .video-card:hover::before {
+            opacity: 1;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--seafoam);
+            box-shadow: 0 12px 40px rgba(100, 255, 218, 0.2);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--sand);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .video-date {
+            font-size: 0.9rem;
+            color: var(--seafoam);
+            opacity: 0.7;
+        }
+
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--wave-blue), var(--seafoam));
+            color: var(--ocean-deep);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+        }
+
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 255, 218, 0.5);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            font-size: 1.2rem;
+            color: var(--seafoam);
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--seafoam);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--sand);
+            opacity: 0.7;
+            position: relative;
+            z-index: 10;
+        }
+
+        .cozy-corner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 3rem;
+            opacity: 0.3;
+            z-index: 5;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Video Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .video-modal-content {
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(26, 58, 82, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid var(--seafoam);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.4s ease;
+            position: relative;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: scale(0.9) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--seafoam);
+            color: var(--ocean-deep);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .close-modal:hover {
+            background: var(--sunset);
+            transform: rotate(90deg);
+        }
+
+        .video-player-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .video-player-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-video-title {
+            color: var(--seafoam);
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .watch-on-youtube {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--wave-blue), var(--seafoam));
+            color: var(--ocean-deep);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .watch-on-youtube:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 255, 218, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 2rem 1.5rem;
+            }
+
+            .video-modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .modal-video-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="cozy-corner">🌊</div>
+
+    <div class="container">
+        <header>
+            <h1>PrinceRomeo</h1>
+            <p class="tagline">Scripting from Cozy Shores</p>
+        </header>
+
+        <div class="section">
+            <h2>Latest Scripts & Tutorials</h2>
+            <div style="margin: 2rem 0;">
+                <a href="https://www.youtube.com/@romeodevv" target="_blank" class="youtube-link">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    Visit My YouTube Channel
+                </a>
+            </div>
+            
+            <div id="videos-container">
+                <div class="loading">Loading videos from the depths</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🏖️ Crafted with passion by the ocean waves 🌊</p>
+        </footer>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-modal">
+        <div class="video-modal-content">
+            <button class="close-modal" onclick="closeVideoModal()">×</button>
+            <div class="modal-video-title" id="modalVideoTitle">Video Title</div>
+            <div class="video-player-wrapper">
+                <iframe id="videoPlayer" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <a id="youtubeLink" href="#" target="_blank" class="watch-on-youtube">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                Watch on YouTube
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Hardcoded video data
+        const videos = [
+            {
+                id: 'WToMNPKYMyE',
+                title: 'Video 1',
+                url: 'https://www.youtube.com/watch?v=WToMNPKYMyE'
+            },
+            {
+                id: 'WAB2LUsG3Pw',
+                title: 'Video 2',
+                url: 'https://www.youtube.com/watch?v=WAB2LUsG3Pw'
+            },
+            {
+                id: 'kNRbV4DbGGI',
+                title: 'Video 3',
+                url: 'https://www.youtube.com/watch?v=kNRbV4DbGGI'
+            },
+            {
+                id: 'Ah-wVVlfB0U',
+                title: 'Video 4',
+                url: 'https://www.youtube.com/watch?v=Ah-wVVlfB0U'
+            },
+            {
+                id: '4hweY-cAH1A',
+                title: 'Video 5',
+                url: 'https://www.youtube.com/watch?v=4hweY-cAH1A'
+            },
+            {
+                id: 'u3ImPJuLo0Y',
+                title: 'Video 6',
+                url: 'https://www.youtube.com/watch?v=u3ImPJuLo0Y'
+            },
+            {
+                id: 'WOVhyEnv3m8',
+                title: 'Video 7',
+                url: 'https://www.youtube.com/watch?v=WOVhyEnv3m8'
+            }
+        ];
+        
+        function openVideoModal(videoId, title, url) {
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('videoPlayer');
+            const modalTitle = document.getElementById('modalVideoTitle');
+            const youtubeLink = document.getElementById('youtubeLink');
+            
+            // Set video source with autoplay
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            modalTitle.textContent = title;
+            youtubeLink.href = url;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('videoPlayer');
+            
+            // Stop video by clearing src
+            player.src = '';
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+        
+        function displayVideos() {
+            const container = document.getElementById('videos-container');
+            const videoGrid = document.createElement('div');
+            videoGrid.className = 'video-grid';
+            
+            videos.forEach((video, index) => {
+                const thumbnail = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+                
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.onclick = () => openVideoModal(video.id, video.title, video.url);
+                
+                card.innerHTML = `
+                    <img src="${thumbnail}" alt="${video.title}" class="video-thumbnail" onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                    <div class="video-info">
+                        <div class="video-title">${video.title}</div>
+                        <div class="video-date">Click to watch</div>
+                    </div>
+                `;
+                
+                videoGrid.appendChild(card);
+            });
+            
+            container.innerHTML = '';
+            container.appendChild(videoGrid);
+        }
+        
+        // Load videos when page loads
+        window.addEventListener('load', displayVideos);
+    </script>
+</body>
+</html>
